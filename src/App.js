@@ -4,7 +4,7 @@ import './styles/main.styl';
 
 import v404 from './views/v404';
 
-// import Hello from './components/Hello';
+import Hello from './components/Hello';
 
 const dynamicImportPage = (view) => {
     return class DynamicPage extends React.Component {
@@ -46,16 +46,17 @@ const Index = (props) => (
 class App extends Component {
   render() {
     return (
-        <Router>
-          <div className="App">
-            <Switch>
-                <Route exact path="/" component={dynamicImportPage('./views/index')} />
-                <Route component={v404} />
-            </Switch>
-          </div>
-        </Router>
-    );
+      <Hello/>
+    )
   }
 }
 
 export default App;
+{/*<Router>*/}
+  {/*<div className="App">*/}
+    {/*<Switch>*/}
+      {/*<Route exact path="/" component={dynamicImportPage('./views/index')} />*/}
+      {/*<Route component={v404} />*/}
+    {/*</Switch>*/}
+  {/*</div>*/}
+{/*</Router>*/}

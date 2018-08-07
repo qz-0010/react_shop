@@ -2,9 +2,9 @@ import axios from 'axios';
 import { GET_CONTACTS } from './types';
 
 export const getContacts = () => async dispatch => {
-  const res = await axios.get('https://jsonplaceholder.typicode.com/users');
+  const res = await axios.get('/goods');
   dispatch({
     type: GET_CONTACTS,
-    contacts: res.data
+    contacts: res.data.goods
   });
-}
+};

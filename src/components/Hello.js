@@ -15,9 +15,8 @@ import { getContacts } from '../store/actions';
 class Hello extends React.Component {
 
     componentDidMount() {
-        debugger;
         this.props.getContacts();
-        console.log('getContacts', this.props.contacts)
+        console.log('getContacts', this.props.contacts);
         // this.props.dispatch({type: 'INIT', text: 'Hello from redux component'})
     }
 
@@ -32,7 +31,7 @@ class Hello extends React.Component {
 
 const mapStateToProps = (state) => {
     console.log('mapStateToProps', state);
-    
+
     return {
       text: state.hello.text,
       contacts: state.contact.contacts
