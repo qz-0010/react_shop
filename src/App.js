@@ -37,26 +37,19 @@ const dynamicImportPage = (view) => {
     }
 }
 
-const Index = (props) => (
-    <DynamicPage view="./views/index">
-        {/*{(Component) => Component}*/}
-    </DynamicPage>
-)
-
 class App extends Component {
   render() {
     return (
-      <Hello/>
+        <Router>
+          <div className="App">
+            <Switch>
+              <Route exact path="/" component={dynamicImportPage("./views/index")} />
+              <Route component={dynamicImportPage("./views/v404")} />
+            </Switch>
+          </div>
+        </Router>
     )
   }
 }
 
 export default App;
-{/*<Router>*/}
-  {/*<div className="App">*/}
-    {/*<Switch>*/}
-      {/*<Route exact path="/" component={dynamicImportPage('./views/index')} />*/}
-      {/*<Route component={v404} />*/}
-    {/*</Switch>*/}
-  {/*</div>*/}
-{/*</Router>*/}

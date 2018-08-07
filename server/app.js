@@ -4,7 +4,7 @@ const express = require('express');
 const server = require('./server');
 const db = require('./db');
 const bodyParser = require('body-parser');
-// const errorsMW = require('./middlewares/errors');
+const errorsMW = require('./middlewares/errors');
 // const passportService = require('./services/passport');
 const goodsService = require('./services/goods');
 
@@ -20,6 +20,7 @@ const app = express();
 
 db();
 server(app);
+
 
 goodsService(app);
 // == UPLOAD SERVICE ==
@@ -38,5 +39,4 @@ goodsService(app);
 //
 // passportService(app);
 
-
-// errorsMW(app);
+errorsMW(app);

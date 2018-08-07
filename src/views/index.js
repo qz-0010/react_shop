@@ -1,8 +1,11 @@
 import React from 'react';
+import Goods from '../components/Goods';
 
 const index = (props) => {
   return (
-    <div>index</div>
+    <div>
+        <Goods />
+    </div>
   )
 }
 
