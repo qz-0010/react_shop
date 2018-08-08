@@ -1,10 +1,16 @@
 import React from 'react';
-import Popup from '../Popup';
+import { connect } from 'react-redux';
 import Item from './Item';
+import withPopup from '../HOC/withPopup';
+import { openPopup, closePopup } from '../../store/actions';
 
-export default class Goods extends React.Component {
+// const PopupItem = withPopup(Item);
+
+class Goods extends React.Component {
   constructor(props) {
     super(props);
+
+    this.watchItem = this.watchItem.bind(this);
   }
 
   state = {
@@ -12,20 +18,12 @@ export default class Goods extends React.Component {
   }
 
   watchItem(item) {
-    this.setState({
-        activePopup: !this.state.activePopup,
-        activeItem: item
-    });
+    debugger;
+    this.props.openPopup(Item, item);
   }
 
-  renderPopup() {
-    if(!this.state.activePopup) return false
-
-    return (
-        <Popup active={this.state.activePopup}>
-            <p>hello popup</p>
-        </Popup>
-    )
+  componentDidMount() {
+    console.log('Goods', this.props);
   }
 
   render() {
@@ -33,11 +31,15 @@ export default class Goods extends React.Component {
       <div className="goods">
           <div className="goods__list">
               <div className="goods__item">
-                <Item onWatchItem={this.watchItem.bind(this)} title={'Lorem ipsum dolor.'} price={3438} img={'http://placekitten.com/150/200'}/>
+                {/*<Item openPopup={this.props.openPopup} onWatchItem={this.watchItem} title={'Lorem ipsum dolor.'} price={3438} img={'http://placekitten.com/150/200'} />*/}
+                <Item openPopup={this.props.openPopup} closePopup={this.props.closePopup} onWatchItem={this.watchItem} title={'Lorem ipsum dolor.'} price={3438} img={'http://placekitten.com/150/200'} />
               </div>
           </div>
-          {this.renderPopup()}
+          {/*{this.renderPopup()}*/}
       </div>
     );
   }
 }
+
+export default connect(null, {openPopup, closePopup})(Goods);
+// export default withPopup(Goods);
