@@ -4,6 +4,7 @@ const express = require('express');
 const server = require('./server');
 const db = require('./db');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const errorsMW = require('./middlewares/errors');
 // const passportService = require('./services/passport');
 const goodsService = require('./services/goods');
@@ -21,6 +22,7 @@ const app = express();
 db();
 server(app);
 
+app.use(cookieParser());
 
 goodsService(app);
 // == UPLOAD SERVICE ==
