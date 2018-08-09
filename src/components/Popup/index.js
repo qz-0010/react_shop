@@ -3,17 +3,6 @@ import { connect } from 'react-redux';
 import { openPopup, closePopup } from '../../store/actions';
 
 class Popup extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    console.log('popup', this.props);
-  }
-
-  componentDidUpdate() {
-    console.log('popup', this.props.props.img);
-  }
 
   render() {
     const { Component, active, props } = this.props;
@@ -24,7 +13,6 @@ class Popup extends React.Component {
             <button className="popup__close" onClick={this.props.closePopup}>Закрыть</button>
             <div className="popup__body">
                 <Component {...props}/>
-                popup!
             </div>
         </div>
     );

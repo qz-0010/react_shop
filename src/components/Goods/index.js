@@ -18,7 +18,6 @@ class Goods extends React.Component {
   }
 
   watchItem(item) {
-    debugger;
     this.props.openPopup(Item, item);
   }
 

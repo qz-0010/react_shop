@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Goods from '../components/Goods';
-import Popup from '../components/Popup';
+import Layout from './Layout';
 
 const index = (props) => {
   return (
-    <div>
-        <Goods />
-        <Popup />
-    </div>
+    <Layout>
+      <Goods />
+    </Layout>
   )
 }
 

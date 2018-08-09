@@ -19,19 +19,16 @@ const popupReducer = (state={active: false, Component: null}, action) => {
 
   switch(action.type) {
     case OPEN_POPUP:
-      console.log('popupReducer', {...state, active, Component, props})
       return {
         ...state,
         active,
         Component,
-        props: props
+        props
       }
     case CLOSE_POPUP:
       return {
         ...state,
-        active,
-        Component,
-        props: props
+        active
       }
     default:
       return state
