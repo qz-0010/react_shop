@@ -1,20 +1,45 @@
 const Model = require('./GoodModel');
-const { getAll } = require('./lib');
+const { getAll, saveGood } = require('./lib');
+const { requireAdmin } = require('../passport/middlewares');
+const uuid = require('uuid');
 
 module.exports = (app) => {
-  app.get('/goods', async (req, res, next) => {
-    // for (let i = 0; i < 10; i++) {
-    //   let item = {
-    //     title: 'good title ' + Math.round(Math.random() * 10),
-    //     image: 'http://placekitten.com/300/20' + Math.round(Math.random() * 10),
-    //     price: 1000 * Math.round(Math.random() * 10)
-    //   };
-    //
-    //   let model = new Model(item);
-    //
-    //   model.save();
-    // }
+  app.get('/catalog', async (req, res, next) => {
     const goods = await getAll(next);
-    res.send(goods);
+    res.json(goods);
+  });
+
+  app.post('/admin/good', requireAdmin, async (req, res, next) => {
+    const goods = await saveGood(req.body, next);
+    res.end('ok');
+  });
+
+  app.post('/basket', (req, res, next) => {
+    // client
+    // let { order } = req.cookies;
+
+    // if(order) {
+    //     try{
+    //         order = JSON.parse(order)
+    //     } catch(e) {
+    //         next(e);
+    //     }
+    // } else {
+    //     order = {orderid: uuid(), items: []}
+    // }
+
+    // const { id, count } = req.body;
+
+    // if(order.items.indexOf(id) !== -1) return res.json(order);
+
+    // let newOrder = JSON.stringify({...order, items: [...order.items, req.body]});
+
+    // res.cookie('order', newOrder, { path: '/' });
+    // res.json(newOrder);
+  });
+
+  app.post('/cart/', requireAdmin, async (req, res, next) => {
+    const goods = await saveGood(req.body, next);
+    res.end('ok');
   });
 };
