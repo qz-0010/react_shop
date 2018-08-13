@@ -44,6 +44,7 @@ class App extends Component {
           <div className="App">
             <Switch>
               <Route exact path="/" component={dynamicImportPage("./views/index")} />
+              <Route exact path="/admin" component={dynamicImportPage("./views/admin/index")} />
               <Route component={dynamicImportPage("./views/v404")} />
             </Switch>
           </div>

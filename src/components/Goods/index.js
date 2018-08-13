@@ -1,20 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Item from './Item';
-import withPopup from '../HOC/withPopup';
 import { openPopup, closePopup } from '../../store/actions';
-
-// const PopupItem = withPopup(Item);
 
 class Goods extends React.Component {
   constructor(props) {
     super(props);
 
     this.watchItem = this.watchItem.bind(this);
-  }
-
-  state = {
-    activePopup: false
   }
 
   watchItem(item) {
@@ -41,4 +34,3 @@ class Goods extends React.Component {
 }
 
 export default connect(null, {openPopup, closePopup})(Goods);
-// export default withPopup(Goods);
