@@ -1,9 +1,11 @@
+require('dotenv').config();
+
 const path = require('path');
 const config = require('./config');
 const express = require('express');
 const server = require('./server');
 const db = require('./db');
-const xssFilter = require('x-xss-protection')
+const xssFilter = require('x-xss-protection');
 // const frameguard = require('frameguard');
 const nosniff = require('dont-sniff-mimetype');
 const ienoopen = require('ienoopen');
@@ -11,18 +13,10 @@ const csp = require('helmet-csp');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const errorsMW = require('./middlewares/errors');
-// const passportService = require('./services/passport');
+const passportService = require('./services/passport');
 const goodsService = require('./services/goods');
 
-
 const app = express();
-
-// const publicPath = path.join(__dirname, 'public');
-
-// app.use( express.static(publicPath) );
-
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'pug');
 
 // csp задает заголовок Content-Security-Policy для предотвращения атак межсайтового скриптинга и прочих межсайтовых вмешательств.
 // hidePoweredBy удаляет заголовок X-Powered-By.
@@ -34,14 +28,14 @@ const app = express();
 // frameguard задает заголовок X-Frame-Options для защиты от кликджекинга.
 // xssFilter задает заголовок X-XSS-Protection для активации фильтра XSS (фильтра межсайтового скриптинга) в большинстве современных веб-браузеров.
 
-db();
 server(app);
+db();
 
 app.disable('x-powered-by');
 // Only let me be framed by people of the same origin:
 // app.use(frameguard({ action: 'sameorigin' }))
 app.use(xssFilter());
-app.use(nosniff())
+app.use(nosniff());
 app.use(ienoopen());
 app.use(csp({
   // Specify directives as normal.
@@ -80,27 +74,21 @@ app.use(csp({
   browserSniff: true
 }));
 
-app.use(function(req, res) {
-  console.log('init',req.url, req.cookies);
-});
-
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
 app.use(cookieParser());
 
+
+
+passportService(app);
 goodsService(app);
 // == UPLOAD SERVICE ==
 // uploadService( app, path.join(publicPath, 'files') );
 // == UPLOAD SERVICE ==
 
 
-// app.use(require('express-session')({
-//   secret: config.secret,
-//   resave: false,
-//   saveUninitialized: false
-// }));
 //
 // passportService(app);
 

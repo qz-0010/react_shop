@@ -4,7 +4,7 @@ module.exports = function(app) {
     console.log('LOG ERRORS------');
     console.error(err);
     console.error(err.stack);
-    res.status(500).send('Bad request');
+    // res.status(500).send('Bad request');
     next(req, res);
   }
 

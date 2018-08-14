@@ -1,35 +1,64 @@
+const mongoose = require('mongoose');
+const config = require('../../config');
+const User = require('./UserModel');
+const passport = require('passport');
+const compareErrors = require('../compareErrors');
+const { registerUser } = require('./lib');
+
 module.exports = (app) => {
-    const User = require('./UserModel');
-    const passport = require('passport');
-    
-    app.use( passport.initialize() );
-    app.use( passport.session() );
-    
-    require('./localStrategy')(passport);
+  app.use(require('express-session')({
+    secret: config.secret,
+    resave: false,
+    saveUninitialized: false
+  }));
+  app.use(passport.initialize());
+  app.use(passport.session());
 
-    passport.serializeUser(function(user, done) {
-      done(null, user.id);
-    });
+  require('./localStrategy')(passport);
 
-    passport.deserializeUser(function(id, done) {
-      User.findById(id, done);
-    });
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
 
-    app.post('/login', (req, res, next) => {
-        return passport.authenticate('local', async function(err, user, info) {
-            console.log(req.login);
-            if (err) throw err;
+  passport.deserializeUser((id, done) => {
+    User.findById(id, done);
+  });
 
-            if (!user) res.send(info);
+  function authenticate(req, res, next) {
+    return passport.authenticate('local', async (err, user, info) => {
+      if (err) return next(err);
 
-            req.login(user, (err) => {
-                if (err) throw err;
-                res.send('success');
-            });
-        })(req, res, next);
-    });
+      if (!user) return res.send(info);
 
-    app.post('/register', (req, res, next) => {
-        
-    });
-}
+      return req.login(user, (err) => {
+        if (err) return next(err);
+
+        // return res.redirect(req.path);
+        res.end('ok');
+      });
+    })(req, res, next);
+  }
+
+  app.post('/login', authenticate);
+
+  app.post('/register', async (req, res, next) => {
+    registerUser(req.body, next).then(
+      (user) => {
+        res.end('ok')
+      },
+      (err) => {
+        res.json(err)
+      }
+    )
+  });
+
+  app.get('/logout', async (req, res, next) => {
+    try {
+      await req.session.destroy();
+    } catch (err) {
+      return next(err);
+    }
+    req.logout();
+    return res.status(200).clearCookie('connect.sid', { path: '/' });
+  });
+};

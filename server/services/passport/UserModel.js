@@ -1,64 +1,55 @@
 const mongoose = require('mongoose');
-const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 const config = require('./../../config');
-
-function json(obj) {
-  return JSON.stringify(obj);
-}
 
 const userSchema = new mongoose.Schema({
   email: {
-    type:     String,
-    unique:   true,
-    required: json({ "error": {"email": "required"} }),
+    type: String,
+    unique: true,
+    required: [true, 'required'],
     validate: [
       {
         validator: function checkEmail(value) {
-          return /^[-.\w]+@([\w-]+\.)+[\w-]{2,12}$/.test(value);
+          return /^.+@.+/.test(value);
         },
-        msg: json({ "error": {"email": "novalid"} })
+        msg: 'novalid'
       }
     ]
   },
-  passwordHash: {
+  password: {
     type: String,
-    required: true
-  },
-  salt:          {
-    required: true,
-    type: String
+    required: [true, 'required'],
+    minlength: [4, 'minlength']
   }
 }, {
   timestamps: true
 });
 
-// userSchema.methods.getPublicFields = function() {
-//   return {
-//     email: this.email
-//   }
-// };
+userSchema.pre('save', function (next) {
+  const user = this;
 
-userSchema.virtual('password')
-    .set(function(password) {
-        if (!password) this.invalidate('password', json({ "error": {"password": "required"} }))
+  if (!user.isModified('password')) return next();
 
-        if (password.length < 4) this.invalidate('password', json({ "error": {"password": "minlength"} }))
+  // generate a salt
+  // bcrypt.genSalt(config.bcrypt.hash.iterations, (err, salt) => {
+    // if (err) return next(err);
 
-        this._plainPassword = password;
+    // hash the password along with our new salt
+    bcrypt.hash(user.password, config.bcrypt.hash.iterations).then(function(hash){
+      // if (err) return next(err);
 
-        this.salt = crypto.randomBytes(config.crypto.hash.length).toString('base64');
-        this.passwordHash = crypto.pbkdf2Sync(password, this.salt, config.crypto.hash.iterations, config.crypto.hash.length, 'sha1');
-    })
-    .get(function() {
-        return this._plainPassword;
+      // override the cleartext password with the hashed one
+      user.password = hash;
+      next(null, user);
     });
+  // });
+});
 
-userSchema.methods.checkPassword = function(password) {
-  if (!password) return false; // empty password means no login by password
-  
-  if (!this.passwordHash) return false; // this user does not have password (the line below would hang!)
-
-  return crypto.pbkdf2Sync(password, this.salt, config.crypto.hash.iterations, config.crypto.hash.length, 'sha1') == this.passwordHash;
+userSchema.methods.checkPassword = function (candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
 };
 
 module.exports = mongoose.model('User', userSchema);
