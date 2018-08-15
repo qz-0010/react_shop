@@ -4,15 +4,15 @@ const { requireAdmin } = require('../passport/middlewares');
 const uuid = require('uuid');
 
 module.exports = (app) => {
+  app.post('/admin/*', requireAdmin);
+  
+  app.post('/admin/good', saveGood);
+
   app.get('/catalog', async (req, res, next) => {
     const goods = await getAll(next);
     res.json(goods);
   });
 
-  app.post('/admin/good', requireAdmin, async (req, res, next) => {
-    const goods = await saveGood(req.body, next);
-    res.end('ok');
-  });
 
   app.post('/basket', (req, res, next) => {
     // client

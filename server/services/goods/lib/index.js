@@ -1,26 +1,27 @@
 const mongoose = require('mongoose');
 const GoodModel = require('../GoodModel');
-const connectionState = mongoose.connection.readyState;
+const compareErrors = require('../../compareErrors');
 //  0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
 
 const getAll = (next) => {
-  return GoodModel.find((err) => {
-    if(err) return next(err);
+  return GoodModel.find((err, users) => {
+    if(err) return compareErrors(err, next);
     
-    next({x: 'x'});
-    // cb(docs);
+    return users;
   })
 };
 
-const saveGood = (data, next) => {
-  if(connectionState !== 1) return next({connectionState});
+const saveGood = (req, res, next) => {
+  if(mongoose.connection.readyState !== 1) return next({connectionState});
 
-  return GoodModel.create(data, (err, good) => {
-    console.log('saveGood', err);
+  const { title, price, image } = req.body;
 
+  return GoodModel.create({ title, price, image }, (err, good) => {
     if(err) {
-      return next(err);
+      return res.json(compareErrors(err, next));
     }
+
+    res.end('ok');
   });
 };
 

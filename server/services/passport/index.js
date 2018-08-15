@@ -1,13 +1,19 @@
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const config = require('../../config');
 const User = require('./UserModel');
 const passport = require('passport');
 const compareErrors = require('../compareErrors');
-const { registerUser } = require('./lib');
+const { registerUser, authenticate } = require('./lib');
 
 module.exports = (app) => {
-  app.use(require('express-session')({
+  app.use(session({
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
     secret: config.secret,
+    name: config.cookie.sessionName,
+    // cookie: {
+    // },
     resave: false,
     saveUninitialized: false
   }));
@@ -23,21 +29,6 @@ module.exports = (app) => {
   passport.deserializeUser((id, done) => {
     User.findById(id, done);
   });
-
-  function authenticate(req, res, next) {
-    return passport.authenticate('local', async (err, user, info) => {
-      if (err) return next(err);
-
-      if (!user) return res.send(info);
-
-      return req.login(user, (err) => {
-        if (err) return next(err);
-
-        // return res.redirect(req.path);
-        res.end('ok');
-      });
-    })(req, res, next);
-  }
 
   app.post('/login', authenticate);
 
@@ -59,6 +50,7 @@ module.exports = (app) => {
       return next(err);
     }
     req.logout();
-    return res.status(200).clearCookie('connect.sid', { path: '/' });
+    res.status(200).clearCookie(config.cookie.sessionName, { path: '/' });
+    res.end('ok');
   });
 };

@@ -10,7 +10,17 @@ function wrapForm(WrappedComponent) {
     }
 
     state = {
+      valid: false,
+      inputs: {}
     };
+
+    onInputInit(props) {
+      const newState = {inputs: {}};
+
+      newState.inputs[props.type] = [...this.state.inputs[props.type], {...props}]
+
+      this.setState(newState);
+    }
 
     onInputChange(e) {
       const { name, type, value, checked } = e.target;
@@ -26,6 +36,45 @@ function wrapForm(WrappedComponent) {
       newState[name] = val;
       this.setState(newState);
       // console.log('wrapForm', this.state);
+    }
+
+    validate() {
+      const { inputs } = this.state;
+      const newState = {
+        inputs: {
+
+        }
+      }
+
+      if(inputs.radio) {
+        let radioGroups = inputs.radio.reduce((_group, _input) => {
+          if(!_group[_input.name]) _group[_input.name] = {valid: false, inputs: []};
+          
+          _group.inputs[_input.name].push(_input);
+        }, {'name': {valid: false, inputs: []}});
+
+        Object.keys(radioGroups).map((key, i) => {
+          let _group = radioGroups[key];
+
+          if(!_group.inputs[1].required) {
+            return
+          }
+
+          let checked = _group.inputs.filter(_input => _input.checked)
+          
+          if(checked.length === 0) {
+            _group.valid = false
+          }
+        });
+
+        
+      }
+
+
+    }
+
+    componentDidMount() {
+      
     }
 
     render() {

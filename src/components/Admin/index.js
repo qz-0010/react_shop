@@ -6,8 +6,16 @@ import AddGood from './AddGood';
 
 class Admin extends Component {
 
-  onAddGoodSubmit(formState) {
-    // axios.post
+  async onAddGoodSubmit(formState) {
+    const { title, price } = formState;
+
+    if(title.length === 0 || price.length === 0) {
+      this.setState({
+        valid: false
+      })
+    }
+
+    await axios.post('/admin/good', {})
     console.log('formState', formState);
   }
 

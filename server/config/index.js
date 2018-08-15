@@ -11,5 +11,8 @@ module.exports = {
       hash: {
         iterations: 1
       }
+    },
+    cookie: {
+      sessionName: 'zombarik'
     }
 };
