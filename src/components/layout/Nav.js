@@ -9,6 +9,7 @@ const Nav = (props) => {
           <Link to="/" className="nav__link">React Shop</Link>
           <Link to="/cart" className="nav__link">Корзина</Link>
           <Link to="/catalog" className="nav__link">Каталог</Link>
+          <Link to="/logout" className="nav__link">Выйти</Link>
         </li>
       </ul>
     </nav>

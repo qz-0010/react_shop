@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "custom-react-scripts": "0.2.2",
+    "qs": "^6.5.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",

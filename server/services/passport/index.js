@@ -44,6 +44,8 @@ module.exports = (app) => {
   });
 
   app.get('/logout', async (req, res, next) => {
+    if(req.user) return;
+
     try {
       await req.session.destroy();
     } catch (err) {

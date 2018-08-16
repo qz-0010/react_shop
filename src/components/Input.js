@@ -1,16 +1,19 @@
 import React, { Fragment } from 'react';
 
-const Input = (props) => {
-
-  componentDidMount() {
-    props.onIniti(props)
+export default class Input extends React.Component {
+  constructor(props) {
+    super(props);
   }
 
-  return (
-    <Fragment>
-      <input {...props}/>
-    </Fragment>
-  )
-}
+  componentDidMount() {
+    this.props.onInit(this.props);
+  }
 
-export default Input;
+  render() {
+    return (
+      <Fragment>
+        <input {...this.props}/>
+      </Fragment>
+    );
+  }
+}

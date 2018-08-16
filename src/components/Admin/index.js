@@ -3,24 +3,34 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Auth from './Auth';
 import AddGood from './AddGood';
+import qs from 'qs';
+
 
 class Admin extends Component {
 
   async onAddGoodSubmit(formState) {
-    const { title, price } = formState;
+    const { title, price } = formState.values;
 
-    if(title.length === 0 || price.length === 0) {
-      this.setState({
-        valid: false
-      })
-    }
+    if(!formState.valid) return
 
-    await axios.post('/admin/good', {})
-    console.log('formState', formState);
+    axios.post('/admin/good', { title, price }).then(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    )
   }
 
-  onAuthSubmit() {
+  onAuthSubmit(formState) {
+    debugger;
+    const { email, password } = formState.values;
 
+    if(!formState.valid) return
+
+    console.log(qs.stringify({ email, password }));
+
+    axios.post('/login', qs.stringify({ email, password })).then(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    )
   }
 
   render() {
