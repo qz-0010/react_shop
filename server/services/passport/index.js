@@ -44,7 +44,7 @@ module.exports = (app) => {
   });
 
   app.get('/logout', async (req, res, next) => {
-    if(req.user) return;
+    if(!req.user) return res.end('unauthorized');
 
     try {
       await req.session.destroy();

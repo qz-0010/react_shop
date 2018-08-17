@@ -40,7 +40,7 @@ module.exports = {
     });
   },
   authenticate: (req, res, next) => {
-    if(req.user) return res.end('exist');
+    if(req.user) return res.json({email: req.user.email});
 
     return passport.authenticate('local', async (err, user, info) => {
       if (err) return next(err);
@@ -51,7 +51,7 @@ module.exports = {
         if (err) return next(err);
 
         // return res.redirect(req.path);
-        res.end('ok');
+        res.json({email: user.email});
       });
     })(req, res, next);
   }

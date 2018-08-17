@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { authorize, init } from './store/actions';
 import './styles/main.styl';
 
 import v404 from './views/v404';
-
-import Hello from './components/Hello';
 
 const dynamicImportPage = (view) => {
     return class DynamicPage extends React.Component {
@@ -38,7 +38,14 @@ const dynamicImportPage = (view) => {
 }
 
 class App extends Component {
+  async componentDidMount() {
+    await this.props.authorize();
+    this.props.init();
+  }
+
   render() {
+    if(!this.props.stateInit) return (<h1>Init.......</h1>);
+
     return (
         <Router>
           <div className="App">
@@ -53,4 +60,11 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    stateInit: state.init,
+    auth: state.auth
+  }
+}
+
+export default connect(mapStateToProps, {authorize, init})(App);

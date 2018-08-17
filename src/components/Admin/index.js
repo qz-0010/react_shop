@@ -1,48 +1,37 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import Auth from './Auth';
+import AuthForm from '../forms/AuthForm';
 import AddGood from './AddGood';
 import qs from 'qs';
-
+import { connect } from 'react-redux';
+import { authorize } from '../../store/actions';
 
 class Admin extends Component {
 
-  async onAddGoodSubmit(formState) {
-    const { title, price } = formState.values;
-
-    if(!formState.valid) return
-
-    axios.post('/admin/good', { title, price }).then(
-      (res) => console.log(res),
-      (err) => console.log(err)
-    )
+  constructor(props){
+    super(props);
   }
 
-  onAuthSubmit(formState) {
-    debugger;
-    const { email, password } = formState.values;
-
-    if(!formState.valid) return
-
-    console.log(qs.stringify({ email, password }));
-
-    axios.post('/login', qs.stringify({ email, password })).then(
-      (res) => console.log(res),
-      (err) => console.log(err)
-    )
+  componentDidMount() {
+    // this.props.authorize();
   }
 
   render() {
     return (
       <div>
-        <Auth onSubmit={this.onAuthSubmit} />
-        <AddGood onSubmit={this.onAddGoodSubmit} />
+        <AuthForm />
+        <AddGood />
       </div>
     );
   }
 }
 
-Admin.propTypes = {};
+const mapStateToProps = (state) => {
+    console.log('mapStateToProps', state);
 
-export default Admin;
+    return {
+      auth: state.auth
+    }
+}
+
+export default connect(mapStateToProps, {authorize})(Admin);
