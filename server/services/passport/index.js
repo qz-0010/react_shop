@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const passport = require('passport');
 const config = require('../../config');
 const User = require('./UserModel');
-const passport = require('passport');
 const compareErrors = require('../compareErrors');
 const { registerUser, authenticate } = require('./lib');
 
@@ -35,16 +35,16 @@ module.exports = (app) => {
   app.post('/register', async (req, res, next) => {
     registerUser(req.body, next).then(
       (user) => {
-        res.end('ok')
+        res.end('ok');
       },
       (err) => {
-        res.json(err)
+        res.json(err);
       }
-    )
+    );
   });
 
   app.get('/logout', async (req, res, next) => {
-    if(!req.user) return res.end('unauthorized');
+    if (!req.user) return res.end('unauthorized');
 
     try {
       await req.session.destroy();

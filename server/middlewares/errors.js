@@ -1,5 +1,4 @@
-module.exports = function(app) {
-  
+module.exports = function (app) {
   function logErrors(err, req, res, next) {
     console.log('LOG ERRORS------');
     console.error(err);

@@ -1,26 +1,30 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logout } from '../store/actions';
 
-
 const LogoutBtn = (props) => {
-  debugger;
-  if(!props.auth.user) return false;
+  const { auth } = props;
+  const { user } = auth;
+
+  if (!user) return false;
 
   return (
     <Fragment>
-      <button onClick={props.logout}>Выйти</button>
+      <button type="button" onClick={props.logout}>Выйти</button>
     </Fragment>
-  )
-}
+  );
+};
 
+LogoutBtn.propTypes = {
+  auth: PropTypes.object.isRequired
+};
 
 const mapStateToProps = (state) => {
-  console.log('mapStateToProps', state);
 
   return {
     auth: state.auth
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, {logout})(LogoutBtn);
+export default connect(mapStateToProps, { logout })(LogoutBtn);

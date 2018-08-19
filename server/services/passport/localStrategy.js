@@ -26,7 +26,7 @@ module.exports = (passport) => {
         user.checkPassword(password, (err, isMatch) => {
           if (err) return done(err);
 
-          if (!isMatch){
+          if (!isMatch) {
             return done(null, false, 'wrong');
           }
           return done(null, user);

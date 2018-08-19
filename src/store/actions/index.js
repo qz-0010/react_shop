@@ -1,24 +1,25 @@
 import axios from 'axios';
 import qs from 'qs';
-import uuid from 'uuid';
-import { OPEN_POPUP, CLOSE_POPUP, AUTHORIZE, LOGOUT, INIT, GET_GOODS, GET_BUCKET } from './types';
+import {
+  OPEN_POPUP, CLOSE_POPUP, AUTHORIZE, LOGOUT, INIT, GET_GOODS, GET_BUCKET
+} from './types';
 
-export const init = () => async dispatch => {
+export const init = () => async (dispatch) => {
   dispatch({
     type: INIT
   });
 };
 
-export const openPopup = (Component, props) => dispatch => {
+export const openPopup = (Component, componentProps) => (dispatch) => {
   dispatch({
     type: OPEN_POPUP,
     active: true,
     Component,
-    props
+    componentProps
   });
 };
 
-export const closePopup = () => dispatch => {
+export const closePopup = () => (dispatch) => {
   dispatch({
     type: CLOSE_POPUP,
     active: false,
@@ -26,7 +27,7 @@ export const closePopup = () => dispatch => {
   });
 };
 
-export const authorize = (props) => async dispatch => {
+export const authorize = props => async (dispatch) => {
   const data = props ? qs.stringify(props) : '';
 
   return axios.post('/login', data).then(
@@ -36,12 +37,12 @@ export const authorize = (props) => async dispatch => {
         user: res.data
       });
     },
-    (err) => console.error(err)
+    err => console.error(err)
   );
 };
 
-export const logout = () => async dispatch => {
-  const res = await axios.get('/logout');
+export const logout = () => async (dispatch) => {
+  await axios.get('/logout');
 
   dispatch({
     type: LOGOUT,
@@ -49,7 +50,7 @@ export const logout = () => async dispatch => {
   });
 };
 
-export const getGoods = (type='all') => async dispatch => {
+export const getGoods = (type = 'all') => async (dispatch) => {
   const res = await axios.get(`/goods/${type}`);
 
   dispatch({
@@ -59,12 +60,12 @@ export const getGoods = (type='all') => async dispatch => {
 };
 
 const initOrder = () => {
-  var order = localStorage.get('order');
+  let order = localStorage.get('order');
 
-  if(order) {
+  if (order) {
     order = JSON.parse(order);
   } else {
-    order = {orderid: uuid(), goods: {}};
+    order = {};
   }
 
   return order;
@@ -72,37 +73,13 @@ const initOrder = () => {
 
 const setOrder = (order) => {
   localStorage.set('order', JSON.stringify(order));
-}
+};
 
-export const addToBasket = (id, count) => async dispatch => {
-  var order = initOrder();
-  order.goods[id] = count;
+export const addToBasket = (id, count) => async (dispatch) => {
+  const order = initOrder();
+  order[id] = count;
 
   setOrder(order);
 };
 
-
-// async onAddGoodSubmit(formState) {
-//     const { title, price } = formState.values;
-
-//     if(!formState.valid) return
-
-//     axios.post('/admin/good', { title, price }).then(
-//       (res) => console.log(res),
-//       (err) => console.log(err)
-//     )
-//   }
-
-//   onAuthSubmit(formState) {
-//     debugger;
-//     const { email, password } = formState.values;
-
-//     if(!formState.valid) return
-
-//     console.log(qs.stringify({ email, password }));
-
-//     axios.post('/login', qs.stringify({ email, password })).then(
-//       (res) => console.log(res),
-//       (err) => console.log(err)
-//     )
-//   }
+export const getOrder = () => localStorage.get('order');

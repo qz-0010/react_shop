@@ -10,27 +10,26 @@ class Goods extends React.Component {
     this.watchItem = this.watchItem.bind(this);
   }
 
-  watchItem(item) {
-    this.props.openPopup(Item, item);
+  componentDidMount() {
   }
 
-  componentDidMount() {
-    console.log('Goods', this.props);
+  watchItem(itemProps) {
+    this.props.openPopup(Item, itemProps);
   }
 
   render() {
+    const { openPopup, closePopup } = this.props;
+
     return (
       <div className="goods">
-          <div className="goods__list">
-              <div className="goods__item">
-                {/*<Item openPopup={this.props.openPopup} onWatchItem={this.watchItem} title={'Lorem ipsum dolor.'} price={3438} img={'http://placekitten.com/150/200'} />*/}
-                <Item openPopup={this.props.openPopup} closePopup={this.props.closePopup} onWatchItem={this.watchItem} title={'Lorem ipsum dolor.'} price={3438} img={'http://placekitten.com/150/200'} />
-              </div>
+        <div className="goods__list">
+          <div className="goods__item">
+            <Item openPopup={openPopup} closePopup={closePopup} onWatchItem={this.watchItem} title="Lorem ipsum dolor." price={3438} img="http://placekitten.com/150/200" />
           </div>
-          {/*{this.renderPopup()}*/}
+        </div>
       </div>
     );
   }
 }
 
-export default connect(null, {openPopup, closePopup})(Goods);
+export default connect(null, { openPopup, closePopup })(Goods);

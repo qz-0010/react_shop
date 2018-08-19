@@ -1,21 +1,21 @@
+const passport = require('passport');
 const compareErrors = require('../../compareErrors');
 const User = require('../UserModel');
-const passport = require('passport');
 
 module.exports = {
   registerUser: (data, next) => {
     const { email, password } = data;
 
-    return new Promise(async function(resolve, rejected) {
+    return new Promise((async (resolve, rejected) => {
       const existUser = await User.findOne({ email });
       const user = new User({
         email,
         password
       });
-      let _errors = {};
+      const _errors = {};
 
       if (existUser) {
-        _errors.email = { message: 'exist'};
+        _errors.email = { message: 'exist' };
 
         try {
           await user.validate();
@@ -26,7 +26,7 @@ module.exports = {
             }
           }), next);
         } catch (err) {
-          rejected(compareErrors({name: err.name, errors: {..._errors, ...err.errors}}, next));
+          rejected(compareErrors({ name: err.name, errors: { ..._errors, ...err.errors } }, next));
         }
       }
 
@@ -37,22 +37,21 @@ module.exports = {
       } catch (err) {
         rejected(compareErrors(err, next));
       }
-    });
+    }));
   },
   authenticate: (req, res, next) => {
-    if(req.user) return res.json({email: req.user.email});
+    if (req.user) return res.json({ email: req.user.email });
 
     return passport.authenticate('local', async (err, user, info) => {
       if (err) return next(err);
 
-      if (!user) return res.send(info);
+      if (!user) return res.end('no');
 
       return req.login(user, (err) => {
         if (err) return next(err);
 
-        // return res.redirect(req.path);
-        res.json({email: user.email});
+        res.json({ email: user.email });
       });
     })(req, res, next);
   }
-}
+};

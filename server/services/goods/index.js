@@ -5,7 +5,7 @@ const uuid = require('uuid');
 
 module.exports = (app) => {
   app.post('/admin/*', requireAdmin);
-  
+
   app.post('/admin/good', saveGood);
 
   app.get('/catalog', async (req, res, next) => {

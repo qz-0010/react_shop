@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 
-export default class Input extends React.Component {
+export default class Input extends Component {
   constructor(props) {
     super(props);
   }
@@ -12,7 +12,7 @@ export default class Input extends React.Component {
   render() {
     return (
       <Fragment>
-        <input {...this.props}/>
+        <input {...this.props} />
       </Fragment>
     );
   }

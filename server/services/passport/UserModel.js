@@ -32,16 +32,16 @@ userSchema.pre('save', function (next) {
 
   // generate a salt
   // bcrypt.genSalt(config.bcrypt.hash.iterations, (err, salt) => {
+  // if (err) return next(err);
+
+  // hash the password along with our new salt
+  bcrypt.hash(user.password, config.bcrypt.hash.iterations).then((hash) => {
     // if (err) return next(err);
 
-    // hash the password along with our new salt
-    bcrypt.hash(user.password, config.bcrypt.hash.iterations).then(function(hash){
-      // if (err) return next(err);
-
-      // override the cleartext password with the hashed one
-      user.password = hash;
-      next(null, user);
-    });
+    // override the cleartext password with the hashed one
+    user.password = hash;
+    next(null, user);
+  });
   // });
 });
 

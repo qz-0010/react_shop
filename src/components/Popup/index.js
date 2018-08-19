@@ -2,27 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { openPopup, closePopup } from '../../store/actions';
 
-class Popup extends React.Component {
+const Popup = (props) => {
+  const { Component, active, componentProps } = props;
 
-  render() {
-    const { Component, active, props } = this.props;
-    if(!active) return false
+  if (!active) return false;
 
-    return (
-        <div className="popup">
-            <button className="popup__close" onClick={this.props.closePopup}>Закрыть</button>
-            <div className="popup__body">
-                <Component {...props}/>
-            </div>
-        </div>
-    );
-  }
-}
+  return (
+    <div className="popup">
+      <button type="button" className="popup__close" onClick={this.props.closePopup}>Закрыть</button>
+      <div className="popup__body">
+        <Component {...componentProps} />
+      </div>
+    </div>
+  );
+};
 
-const mapStateToProps = (state) => {
-    console.log('mapStateToPropsPopup', state);
-    // const { state.popup }
-    return state.popup
-}
+const mapStateToProps = state => state.popup;
 
-export default connect(mapStateToProps, {openPopup, closePopup})(Popup);
+export default connect(mapStateToProps, { openPopup, closePopup })(Popup);

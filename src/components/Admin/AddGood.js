@@ -13,13 +13,13 @@ const AddGood = (props) => {
     <div>
       <form action="/admin/good" method="POST" onSubmit={_onSubmit} noValidate>
         <div>
-          <Input onChange={props.onInputChange} onInit={props.onInputInit} type="text" name="title" placeholder="title" required={true}/>
+          <Input onChange={props.onInputChange} onInit={props.onInputInit} type="text" name="title" placeholder="title" required />
         </div>
         <div>
-          <Input onChange={props.onInputChange} onInit={props.onInputInit} type="number" name="price" placeholder="price" required={true}/>
+          <Input onChange={props.onInputChange} onInit={props.onInputInit} type="number" name="price" placeholder="price" required />
         </div>
         <div>
-          <Input onChange={props.onInputChange} onInit={props.onInputInit} type="file" name="img"/>
+          <Input onChange={props.onInputChange} onInit={props.onInputInit} type="file" name="img" />
         </div>
         <div>
           <input type="submit" />

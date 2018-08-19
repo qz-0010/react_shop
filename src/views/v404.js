@@ -1,9 +1,5 @@
 import React from 'react';
 
-const v404 = (props) => {
-  return (
-    <div>404</div>
-  )
-}
-
-export default v404;
+export default () => (
+  <div>404</div>
+);

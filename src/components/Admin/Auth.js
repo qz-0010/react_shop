@@ -13,12 +13,12 @@ const Auth = (props) => {
     <div>
       <form action="/login" method="POST" onSubmit={_onSubmit} noValidate>
         <div>
-          <Input onChange={props.onInputChange} onInit={props.onInputInit} type="text" name="email" placeholder="email" required={true}/>
+          <Input onChange={props.onInputChange} onInit={props.onInputInit} type="text" name="email" placeholder="email" required />
         </div>
         <div>
-          <Input onChange={props.onInputChange} onInit={props.onInputInit} type="password" name="password" placeholder="password" required={true}/>
+          <Input onChange={props.onInputChange} onInit={props.onInputInit} type="password" name="password" placeholder="password" required />
         </div>
-        <div><input type="submit"/></div>
+        <div><input type="submit" /></div>
       </form>
     </div>
   );

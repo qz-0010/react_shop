@@ -1,17 +1,16 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { reducers } from './reducers';
+import reducers from './reducers';
 
-const composeEnhancers = 
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
-      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-          // options like actionSanitizer, stateSanitizer
-      }) : compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    // options like actionSanitizer, stateSanitizer
+  }) : compose;
 
 const enhancer = composeEnhancers(
-    applyMiddleware(thunk)
+  applyMiddleware(thunk)
 );
 
-const store = createStore(reducers, {init: false}, enhancer);
+const store = createStore(reducers, { init: false }, enhancer);
 
 export default store;
