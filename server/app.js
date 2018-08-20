@@ -91,7 +91,4 @@ goodsService(app);
 // == UPLOAD SERVICE ==
 
 
-//
-// passportService(app);
-
 errorsMW(app);

@@ -5,7 +5,7 @@ const passport = require('passport');
 const config = require('../../config');
 const User = require('./UserModel');
 const compareErrors = require('../compareErrors');
-const { registerUser, authenticate } = require('./lib');
+const { registerUser, authenticate, logout } = require('./lib');
 
 module.exports = (app) => {
   app.use(session({
@@ -32,27 +32,7 @@ module.exports = (app) => {
 
   app.post('/login', authenticate);
 
-  app.post('/register', async (req, res, next) => {
-    registerUser(req.body, next).then(
-      (user) => {
-        res.end('ok');
-      },
-      (err) => {
-        res.json(err);
-      }
-    );
-  });
+  app.post('/register', registerUser);
 
-  app.get('/logout', async (req, res, next) => {
-    if (!req.user) return res.end('unauthorized');
-
-    try {
-      await req.session.destroy();
-    } catch (err) {
-      return next(err);
-    }
-    req.logout();
-    res.status(200).clearCookie(config.cookie.sessionName, { path: '/' });
-    res.end('ok');
-  });
+  app.get('/logout', logout);
 };
