@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { authorize, init } from './store/actions';
+import React, {Component} from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {authorize, init} from './store/actions';
 import './styles/main.styl';
 
 const dynamicImportPage = (view) => {

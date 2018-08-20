@@ -24,7 +24,14 @@ class Goods extends React.Component {
       <div className="goods">
         <div className="goods__list">
           <div className="goods__item">
-            <Item openPopup={openPopup} closePopup={closePopup} onWatchItem={this.watchItem} title="Lorem ipsum dolor." price={3438} img="http://placekitten.com/150/200" />
+            <Item
+              openPopup={openPopup}
+              closePopup={closePopup}
+              onWatchItem={this.watchItem}
+              title="Lorem ipsum dolor."
+              price={3438}
+              img="http://placekitten.com/150/200"
+            />
           </div>
         </div>
       </div>

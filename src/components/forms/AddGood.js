@@ -12,10 +12,24 @@ const AddGood = (props) => {
   return (
     <form action="/admin/good" method="POST" onSubmit={_onSubmit} noValidate>
       <div>
-        <Input onChange={props.onInputChange} onInit={props.onInputInit} type="text" name="title" placeholder="title" required />
+        <Input
+          onChange={props.onInputChange}
+          onInit={props.onInputInit}
+          type="text"
+          name="title"
+          placeholder="title"
+          required
+        />
       </div>
       <div>
-        <Input onChange={props.onInputChange} onInit={props.onInputInit} type="number" name="price" placeholder="price" required />
+        <Input
+          onChange={props.onInputChange}
+          onInit={props.onInputInit}
+          type="number"
+          name="price"
+          placeholder="price"
+          required
+        />
       </div>
       <div>
         <Input onChange={props.onInputChange} onInit={props.onInputInit} type="file" name="img" />
