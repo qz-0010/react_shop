@@ -1,14 +1,8 @@
 import axios from 'axios';
 import qs from 'qs';
 import {
-  OPEN_POPUP, CLOSE_POPUP, AUTHORIZE, LOGOUT, INIT, GET_GOODS, GET_BUCKET
+  OPEN_POPUP, CLOSE_POPUP, AUTHORIZE, LOGOUT, INIT, GET_GOODS, GET_BUCKET, ADMIN_ADD_GOOD
 } from './types';
-
-export const init = () => async (dispatch) => {
-  dispatch({
-    type: INIT
-  });
-};
 
 export const openPopup = (Component, componentProps) => (dispatch) => {
   dispatch({
@@ -83,3 +77,12 @@ export const addToBasket = (id, count) => async (dispatch) => {
 };
 
 export const getOrder = () => localStorage.get('order');
+
+export const adminAddGood = (data, opt) => async (dispatch) => {
+  const res = await axios.post(`/admin/good`, data, opt);
+
+  dispatch({
+    type: ADMIN_ADD_GOOD,
+    good: res.data
+  });
+};

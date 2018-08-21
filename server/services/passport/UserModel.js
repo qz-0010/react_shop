@@ -20,7 +20,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'required'],
     minlength: [4, 'minlength']
-  }
+  },
+  admin: false
 }, {
   timestamps: true
 });

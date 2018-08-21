@@ -1,12 +1,22 @@
-import React from 'react';
-import Admin from '../../components/Admin';
+import React, { Component } from 'react';
+// import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Nav from '../../components/layout/Nav';
+import AuthForm from '../../components/forms/AuthForm';
+import AddGoodForm from '../../components/forms/AddGoodForm';
+import { authorize } from '../../store/actions';
+import Layout from './Layout';
 
-const MyComponent = () => (
-  <div>
-    <Nav />
-    <Admin />
-  </div>
+const Admin = () => (
+  <Layout>
+    <AuthForm />
+    <AddGoodForm />
+  </Layout>
 );
 
-export default MyComponent;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { authorize })(Admin);
+

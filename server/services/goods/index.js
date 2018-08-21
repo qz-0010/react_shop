@@ -1,12 +1,14 @@
+const config = require('../../config');
 const Model = require('./GoodModel');
-const { getAll, saveGood } = require('./lib');
+const { getAll, saveGood, uploadImage } = require('./lib');
 const { requireAdmin } = require('../passport/middlewares');
 const uuid = require('uuid');
+const ServiceError = require('../ServiceError');
 
 module.exports = (app) => {
   app.all('/admin/*', requireAdmin);
 
-  app.post('/admin/good', saveGood);
+  app.post('/admin/good', uploadImage(), saveGood);
 
   app.get('/catalog', getAll);
 

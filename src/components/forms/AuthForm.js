@@ -9,9 +9,13 @@ const Auth = (props) => {
 
   const _onSubmit = (e) => {
     e.preventDefault();
+    const { email, password } = props.formState.inputs;
 
     props.validateForm();
-    props.authorize(props.formState.values);
+    props.authorize({
+      email: email.value,
+      password: password.value
+    });
   };
 
   return (

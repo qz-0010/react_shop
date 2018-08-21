@@ -1,4 +1,5 @@
 const { PORT, MONGO_URI, NODE_ENV } = process.env;
+const path = require('path');
 
 module.exports = {
   port: PORT || 5000,
@@ -11,5 +12,7 @@ module.exports = {
   },
   cookie: {
     sessionName: 'zombarik'
-  }
+  },
+  publicPath: path.join(__dirname, '../../public'),
+  pathToImages: path.join(__dirname, '../../public/img/goods')
 };

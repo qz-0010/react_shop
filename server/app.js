@@ -31,6 +31,8 @@ const app = express();
 server(app);
 db();
 
+app.use( express.static(config.publicPath) );
+
 app.disable('x-powered-by');
 // Only let me be framed by people of the same origin:
 // app.use(frameguard({ action: 'sameorigin' }))
@@ -75,7 +77,10 @@ app.use(csp({
 }));
 
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true,
+  verify: function(req, res, buf, encoding) {
+    if(encoding === 'multipart/form-data') throw new Error('multipart')
+  }
 }));
 
 app.use(bodyParser.json());

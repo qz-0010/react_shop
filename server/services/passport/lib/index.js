@@ -16,12 +16,12 @@ const registerUser = wrapAsyncFn(async (req, res, next) => {
     password
   });
 
-  res.send({email: user.email});
+  res.send({ email: user.email });
   return user;
 });
 
 const authenticate = wrapAsyncFn(async (req, res, next) => {
-  if (req.user) return res.send({ email: req.user.email });
+  if (req.user) return res.send({ email: req.user.email, admin: req.user.admin });
 
   return passport.authenticate('local', (err, user, info) => {
     if (err) throw err;
@@ -31,7 +31,7 @@ const authenticate = wrapAsyncFn(async (req, res, next) => {
     return req.login(user, (err) => {
       if (err) throw err;
 
-      res.send({ email: user.email });
+      res.send({ email: user.email, admin: user.admin });
     });
   })(req, res, next);
 });

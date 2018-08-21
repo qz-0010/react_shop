@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {authorize, init} from './store/actions';
+import {authorize} from './store/actions';
 import './styles/main.styl';
 
 const dynamicImportPage = (view) => {
@@ -37,13 +37,23 @@ const dynamicImportPage = (view) => {
 };
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      init: false
+    }
+  }
+
   async componentDidMount() {
     await this.props.authorize();
-    this.props.init();
+    this.setState({
+      init: true
+    })
   }
 
   render() {
-    if (!this.props.stateInit) return (<h1>Init.......</h1>);
+    if (!this.state.init) return (<h1>Init.......</h1>);
 
     return (
       <Router>
@@ -61,9 +71,8 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    stateInit: state.init,
     auth: state.auth
   }
 };
 
-export default connect(mapStateToProps, {authorize, init})(App);
+export default connect(mapStateToProps, {authorize})(App);

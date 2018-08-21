@@ -7,5 +7,5 @@ module.exports = function compareErrors(err, next) {
     error[key] = err.errors[key].message;
     result.push(error);
   });
-  return result;
+  return {errors: result};
 };
