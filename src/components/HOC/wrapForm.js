@@ -21,7 +21,8 @@ function wrapForm(WrappedComponent) {
 
     setInputValues(props) {
       const newState = { ...this.state };
-      const cell = {
+      const newStateInput = newState.inputs[props.name];
+      const input = newStateInput ? newStateInput : {
         valid: !props.required,
         required: props.required,
         type: props.type
@@ -29,15 +30,19 @@ function wrapForm(WrappedComponent) {
 
       switch(props.type){
         case 'file':
-          cell.value = props.files;
+          input.value = props.files;
           break;
         case 'checkbox':
-          cell.checked = props.checked ? true : false;
+          input.checked = props.checked;
+          break;
+        case 'radio':
+          input.checked = props.checked;
+          input.value = props.value;
           break;
         default:
-          cell.value = props.value ? props.value : '';
+          input.value = props.value ? props.value : '';
       }
-      newState.inputs[props.name] = cell;
+      newState.inputs[props.name] = input;
 
       return this.setState(newState);
     }
@@ -55,18 +60,18 @@ function wrapForm(WrappedComponent) {
     validate() {
       const newState = { ...this.state };
       let inputsKeys = Object.keys(this.state.inputs);
-      let cellsArr = [];
+      let inputsArr = [];
       
       inputsKeys.map((key) => {
-        let cell = this.state.inputs[key];
+        let input = this.state.inputs[key];
 
-        if(!cell.required || cell.type === 'file') return
+        if(!input.required || input.type === 'file') return
 
-        newState.inputs[key].valid = cell.type === 'checkbox' ? cell.checked : cell.value.trim().length > 0
-        cellsArr.push(cell);
+        newState.inputs[key].valid = input.type === 'checkbox' || input.type === 'radio' ? input.checked : input.value.trim().length > 0
+        inputsArr.push(input);
       });
 
-      const notValidArr = cellsArr.filter(cell => !cell.valid);
+      const notValidArr = inputsArr.filter(input => !input.valid);
       newState.valid = notValidArr.length === 0;
       this.setState(newState);
     }

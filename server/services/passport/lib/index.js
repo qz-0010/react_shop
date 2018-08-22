@@ -26,7 +26,7 @@ const authenticate = wrapAsyncFn(async (req, res, next) => {
   return passport.authenticate('local', (err, user, info) => {
     if (err) throw err;
 
-    if (!user) return res.send('no');
+    if (!user) return res.send(null);
 
     return req.login(user, (err) => {
       if (err) throw err;

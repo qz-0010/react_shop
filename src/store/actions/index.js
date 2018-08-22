@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 import {
-  OPEN_POPUP, CLOSE_POPUP, AUTHORIZE, LOGOUT, INIT, GET_GOODS, GET_BUCKET, ADMIN_ADD_GOOD
+  OPEN_POPUP, CLOSE_POPUP, AUTHORIZE, LOGOUT, GET_GOODS, GET_BUCKET, ADMIN_ADD_GOOD
 } from './types';
 
 export const openPopup = (Component, componentProps) => (dispatch) => {
@@ -23,8 +23,9 @@ export const closePopup = () => (dispatch) => {
 
 export const authorize = props => async (dispatch) => {
   const data = props ? qs.stringify(props) : '';
+  const request = axios.post('/login', data);
 
-  return axios.post('/login', data).then(
+  request.then(
     (res) => {
       dispatch({
         type: AUTHORIZE,
@@ -33,6 +34,7 @@ export const authorize = props => async (dispatch) => {
     },
     err => console.error(err)
   );
+  return request;
 };
 
 export const logout = () => async (dispatch) => {

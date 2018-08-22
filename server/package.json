@@ -10,7 +10,7 @@
     "test": "test"
   },
   "scripts": {
-    "dev": "concurrently \"mongod\" \"nodemon --inspect app.js\""
+    "dev": "nodemon --inspect app.js"
   },
   "dependencies": {
     "bcrypt": "^3.0.0",
