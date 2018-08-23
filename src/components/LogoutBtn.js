@@ -11,7 +11,7 @@ const LogoutBtn = (props) => {
 
   return (
     <Fragment>
-      <button type="button" onClick={props.logout}>Выйти</button>
+      <span className="btn" onClick={props.logout}><i className="icon">exit_to_app</i></span>
     </Fragment>
   );
 };

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import {
-  OPEN_POPUP, CLOSE_POPUP, AUTHORIZE, LOGOUT, ADMIN_ADD_GOOD, GET_GOODS
+  OPEN_POPUP, CLOSE_POPUP, AUTHORIZE, REGISTER, LOGOUT, ADMIN_ADD_GOOD, GET_GOODS
 } from '../actions/types';
 
 const popupReducer = (state = { active: false, Component: null }, action) => {
@@ -27,6 +27,7 @@ const popupReducer = (state = { active: false, Component: null }, action) => {
 const authReducer = (state = { user: null }, action) => {
   switch (action.type) {
     case AUTHORIZE:
+    case REGISTER:
     case LOGOUT:
       return {
         ...state,

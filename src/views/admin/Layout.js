@@ -4,9 +4,15 @@ import Popup from '../../components/Popup';
 
 const layout = props => (
   <div className="page">
-    <Nav />
-    {props.children}
-    <Popup />
+    <div className="admin">
+      <Nav />
+      <div className="admin__body" style={{ marginTop: '35px' }}>
+        <div className="container">
+          {props.children}
+        </div>
+      </div>
+      <Popup />
+    </div>
   </div>
 );
 

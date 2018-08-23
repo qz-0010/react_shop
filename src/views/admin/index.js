@@ -9,7 +9,6 @@ import Layout from './Layout';
 
 const Admin = () => (
   <Layout>
-    <AuthForm />
     <AddGoodForm />
   </Layout>
 );
@@ -19,4 +18,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { authorize })(Admin);
-

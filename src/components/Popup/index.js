@@ -10,9 +10,12 @@ const Popup = (props) => {
 
   return (
     <div className="popup">
-      <button type="button" className="popup__close" onClick={props.closePopup}>Закрыть</button>
-      <div className="popup__body">
-        <Component {...componentProps} />
+      <div className="popup__bg" onClick={props.closePopup}></div>
+      <div className="popup__inner">
+        <span className="popup__close" onClick={props.closePopup}><i className="icon">close</i></span>
+        <div className="popup__body">
+          <Component {...componentProps} />
+        </div>
       </div>
     </div>
   );

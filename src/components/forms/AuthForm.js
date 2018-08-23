@@ -6,8 +6,6 @@ import { authorize, openPopup, closePopup } from '../../store/actions';
 // import RegForm from './RegForm';
 
 const Auth = (props) => {
-  if (props.auth.user) return false;
-
   const _onSubmit = (e) => {
     e.preventDefault();
     const { email, password } = props.formState.inputs;
@@ -20,14 +18,16 @@ const Auth = (props) => {
       email: email.value,
       password: password.value
     }).then((res) => {
-      if(!res.data) return;
+      if(!res.data.user) return;
 
       props.closePopup();
     });
   };
 
   const onRegBtnClick = () => {
-    // props.openPopup()
+    import('./RegForm').then((module) => {
+      props.openPopup(module.default)
+    })
   }
 
   return (
@@ -35,7 +35,8 @@ const Auth = (props) => {
       <h4 className="form__title">Авторизация:</h4>
       <div className="form__row">
         <Input
-          className="form__input"
+          autoFocus
+          className="form__input form__input_txt"
           onChange={props.onInputChange}
           onInit={props.onInputInit}
           type="text"
@@ -46,7 +47,7 @@ const Auth = (props) => {
       </div>
       <div className="form__row">
         <Input
-          className="form__input"
+          className="form__input form__input_txt"
           onChange={props.onInputChange}
           onInit={props.onInputInit}
           type="password"
@@ -55,9 +56,9 @@ const Auth = (props) => {
           required
         />
       </div>
-      <div className="form__row"><input type="submit" className="btn btn_rounded btn_middle-sz"/></div>
+      <div className="form__row"><input type="submit" value="Войти" className="btn btn_action btn_rounded btn_sz-middle"/></div>
       <footer className="form__footer">
-        <span className="link">Зарегистрироваться</span>
+        <span className="link" onClick={onRegBtnClick}>Зарегистрироваться</span>
       </footer>
     </form>
   );

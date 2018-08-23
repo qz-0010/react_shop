@@ -1,0 +1,31 @@
+.popup
+  position: fixed
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  z-index: $zIndexPopup
+
+  &__bg
+    position: absolute
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
+    z-index: 1
+    background: rgba(0, 0, 0, .2)
+
+  &__inner
+    position: relative
+    margin: 20% auto 0
+    padding: 30px 40px 40px
+    width: 400px
+    z-index: 2
+    border-radius: 8px
+    background: #fff
+
+  &__close
+    position: absolute
+    top: 12px
+    right: 15px
+    cursor: pointer
