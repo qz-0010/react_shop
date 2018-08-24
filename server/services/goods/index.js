@@ -10,7 +10,7 @@ module.exports = (app) => {
 
   app.post('/admin/good', uploadImage(), saveGood);
 
-  app.get('/catalog', getAll);
+  app.get('/catalog/:page', getAll);
 
   app.post('/basket', (req, res, next) => {
   });

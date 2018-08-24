@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Item from './Item';
-import { openPopup, closePopup } from '../../store/actions';
+import { openPopup, closePopup, getGoods } from '../../store/actions';
 
 class Goods extends React.Component {
   constructor(props) {
@@ -11,6 +11,7 @@ class Goods extends React.Component {
   }
 
   componentDidMount() {
+    this.props.getGoods();
   }
 
   watchItem(itemProps) {
@@ -18,20 +19,22 @@ class Goods extends React.Component {
   }
 
   render() {
-    const { openPopup, closePopup } = this.props;
+    const { openPopup, closePopup, goods } = this.props;
+
+    if(!goods || goods.length === 0) return false;
 
     return (
       <div className="goods">
         <div className="goods__list">
           <div className="goods__item">
-            <Item
-              openPopup={openPopup}
-              closePopup={closePopup}
-              onWatchItem={this.watchItem}
-              title="Lorem ipsum dolor."
-              price={3438}
-              img="http://placekitten.com/150/200"
-            />
+            {goods.map((item) => (
+              <Item
+                openPopup={openPopup}
+                closePopup={closePopup}
+                onWatchItem={this.watchItem}
+                {...item}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -39,4 +42,8 @@ class Goods extends React.Component {
   }
 }
 
-export default connect(null, { openPopup, closePopup })(Goods);
+const mapStateToProps = (state) => ({
+  goods: state.goods.goods
+});
+
+export default connect(mapStateToProps, { openPopup, closePopup, getGoods })(Goods);

@@ -24,7 +24,6 @@ export const closePopup = () => (dispatch) => {
 export const register = props => async (dispatch) => {
   const data = props ? qs.stringify(props) : '';
   const request = axios.post('/register', data);
-  debugger;
 
   request.then(
     (res) => {
@@ -63,12 +62,12 @@ export const logout = () => async (dispatch) => {
   });
 };
 
-export const getGoods = (type = 'all') => async (dispatch) => {
-  const res = await axios.get(`/goods/${type}`);
+export const getGoods = (page = '1') => async (dispatch) => {
+  const res = await axios.get(`/catalog/${page}`);
 
   dispatch({
     type: GET_GOODS,
-    goods: res.data
+    goods: res.data.goods
   });
 };
 
@@ -98,10 +97,10 @@ export const addToBasket = (id, count) => async (dispatch) => {
 export const getOrder = () => localStorage.get('order');
 
 export const adminAddGood = (data, opt) => async (dispatch) => {
-  const res = await axios.post(`/admin/good`, data, opt);
+  const res = await axios.post(`/admin/good`, data);
 
   dispatch({
     type: ADMIN_ADD_GOOD,
-    good: res.data
+    good: res.data.good
   });
 };

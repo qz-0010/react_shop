@@ -1,4 +1,6 @@
+const path = require('path');
 const config = require('../../../config');
+const multer = require('multer');
 const GoodModel = require('../GoodModel');
 const wrapAsyncFn = require('../../wrapAsyncFn');
 const ServiceError = require('../../ServiceError');
@@ -7,15 +9,22 @@ const ServiceError = require('../../ServiceError');
 //  0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
 
 const getAll = wrapAsyncFn(async (req, res, next) => {
-  const goods = await GoodModel.find();
+  let goods = await GoodModel.find();
+  goods = goods.reduce((out, item) => {
+    let imgPath = path.parse(item.image);
 
-  res.send(goods);
+    out.push({
+      title: item.title,
+      price: item.price,
+      img: `${config.relPathToImages}/${imgPath.base}`
+    });
+    return out;
+  }, []);
+  res.send({goods});
   return goods;
 });
 
-const uploadImage = (req, res) => {
-  const multer = require('multer');
-  
+const uploadImage = (req, res) => {  
   const validMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
   const maxFileSize = 1000 * 1000 * 8;
 
@@ -52,9 +61,9 @@ const saveGood = wrapAsyncFn(async (req, res, next) => {
   const good = await GoodModel.create({
     title, 
     price, 
-    image: `${req.file.destination}/${Date.now()}-${req.file.originalname}`
+    image: `${req.file.destination}/${req.file.filename}`
   });
-  res.end(good);
+  res.send({good: {title, price, img: `${config.relPathToImages}/${req.file.filename}`}});
   return good;
 });
 

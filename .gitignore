@@ -9,6 +9,8 @@ node_modules
 # production
 /build
 
+public/img/goods
+
 # misc
 .DS_Store
 .env.local

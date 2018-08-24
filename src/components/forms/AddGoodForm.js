@@ -13,11 +13,15 @@ const AddGoodForm = (props) => {
   const _onSubmit = (e) => {
     e.preventDefault();
     props.validateForm();
+    const { title, price } = props.formState.inputs;
 
     if(!props.formState.valid || !image || !image[0]) return
 
     var data = new FormData();
+    data.append('title', title.value);
+    data.append('price', price.value);
     data.append('img', image[0]);
+    console.log(data);
     props.adminAddGood(data, {
       onUploadProgress: (e) => {
         if (e.lengthComputable) {

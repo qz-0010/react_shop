@@ -13,6 +13,7 @@ module.exports = {
   cookie: {
     sessionName: 'zombarik'
   },
+  relPathToImages: '/img/goods',
   publicPath: path.join(__dirname, '../../public'),
   pathToImages: path.join(__dirname, '../../public/img/goods')
 };

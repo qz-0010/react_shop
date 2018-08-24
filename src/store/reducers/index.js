@@ -48,7 +48,7 @@ const goodsReducer = (state = {goods: []}, action) => {
     case GET_GOODS:
       return {
         ...state,
-        goods: action.goods
+        goods: [...state.goods, ...action.goods]
       };
     default:
       return state;
