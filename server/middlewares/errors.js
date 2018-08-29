@@ -2,26 +2,19 @@ const compareErrors = require('../services/compareErrors');
 
 module.exports = function (app) {
   function logErrors(err, req, res, next) {
-    if(err.code === 'LIMIT_FILE_SIZE' && err.field) {
-      let errors = {};
-      errors[err.field] = {message: 'filesize'};
-      return res.send(compareErrors({errors}));
-    }
+    let errors = {};
 
-    switch(err.name) {
-      case 'UploadMimeType':
-      case 'UploadService':
-        res.send(compareErrors(err));
-        return;
+    switch(err.code) {
+      case 'LIMIT_FILE_SIZE':
+      case 'MIMETYPE':
+        errors[err.field] = {message: 'filesize'};
+        res.status(413).send(compareErrors({errors}));
+        break;
       default:
-        res.send({ error: 'engine' });
-        console.log('LOG ERRORS------');
+        res.status(500).send({ error: 'engine' });
         console.error(err);
     }
     return;
-    // console.error(err.stack);
-    // res.status(500).send('Bad request');
-    // next(req, res);
   }
 
   app.use(logErrors);

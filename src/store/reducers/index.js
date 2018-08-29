@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import {
-  OPEN_POPUP, CLOSE_POPUP, AUTHORIZE, REGISTER, LOGOUT, ADMIN_ADD_GOOD, GET_GOODS
+  OPEN_POPUP, CLOSE_POPUP, AUTHORIZE, REGISTER, LOGOUT, GET_GOODS, ADMIN_ADD_GOOD
 } from '../actions/types';
 
 const popupReducer = (state = { active: false, Component: null }, action) => {
@@ -39,11 +39,12 @@ const authReducer = (state = { user: null }, action) => {
 };
 
 const goodsReducer = (state = {goods: []}, action) => {
+  debugger;
   switch (action.type) {
     case ADMIN_ADD_GOOD:
       return {
         ...state,
-        goods: [...state.goods, action.good]
+        goods: [...state.goods, ...action.good]
       };
     case GET_GOODS:
       return {

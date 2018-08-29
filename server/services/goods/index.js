@@ -1,8 +1,6 @@
 const config = require('../../config');
-const Model = require('./GoodModel');
-const { getAll, saveGood, uploadImage } = require('./lib');
+const { getGoodsByPage, saveGood, uploadImage } = require('./lib');
 const { requireAdmin } = require('../passport/middlewares');
-const uuid = require('uuid');
 const ServiceError = require('../ServiceError');
 
 module.exports = (app) => {
@@ -10,7 +8,7 @@ module.exports = (app) => {
 
   app.post('/admin/good', uploadImage(), saveGood);
 
-  app.get('/catalog/:page', getAll);
+  app.get('/catalog/:page', getGoodsByPage);
 
   app.post('/basket', (req, res, next) => {
   });

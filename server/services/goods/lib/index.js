@@ -5,23 +5,20 @@ const GoodModel = require('../GoodModel');
 const wrapAsyncFn = require('../../wrapAsyncFn');
 const ServiceError = require('../../ServiceError');
 
-// const compareErrors = require('../../compareErrors');
-//  0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
-
-const getAll = wrapAsyncFn(async (req, res, next) => {
+const getGoodsByPage = wrapAsyncFn(async (req, res, next) => {
   let goods = await GoodModel.find();
-  goods = goods.reduce((out, item) => {
-    let imgPath = path.parse(item.image);
+  let page = parseInt(req.params.page);
+  let pageLength = 25;
+  let out = [];
 
-    out.push({
-      title: item.title,
-      price: item.price,
-      img: `${config.relPathToImages}/${imgPath.base}`
-    });
-    return out;
-  }, []);
-  res.send({goods});
-  return goods;
+  for( let i = pageLength * (page - 1); (i < pageLength * page && i < goods.length); i++ ) {
+    let { title, price, image } = goods[i];
+    let imgPath = path.parse(image);
+
+    out.push({ title, price, img: `${config.relPathToImages}/${imgPath.base}` });
+  }
+
+  res.send({goods: out});
 });
 
 const uploadImage = (req, res) => {  
@@ -45,7 +42,7 @@ const uploadImage = (req, res) => {
     fileFilter: function(req, file, cb) {
       // cb(null, false)
       if(validMimeTypes.indexOf(file.mimetype) === -1) {
-        return cb(new ServiceError('UploadService', { img: { message: 'mimetype' } }));
+        return cb(new ServiceError('MIMETYPE', { img: { message: 'mimetype' } }));
       }
 
       cb(null, true);
@@ -68,7 +65,7 @@ const saveGood = wrapAsyncFn(async (req, res, next) => {
 });
 
 module.exports = {
-  getAll,
   uploadImage,
-  saveGood
+  saveGood,
+  getGoodsByPage
 };

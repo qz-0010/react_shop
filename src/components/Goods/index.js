@@ -1,21 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Item from './Item';
+import InfiniteScroll from '../InfiniteScroll';
 import { openPopup, closePopup, getGoods } from '../../store/actions';
 
 class Goods extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      page: 1
+    }
+
+    this.onScrollDone = this.onScrollDone.bind(this);
     this.watchItem = this.watchItem.bind(this);
   }
 
   componentDidMount() {
-    this.props.getGoods();
+    this.props.getGoods(this.state.page);
   }
 
   watchItem(itemProps) {
     this.props.openPopup(Item, itemProps);
+  }
+
+  async onScrollDone() {
+    let { page } = this.state;
+
+    this.props.getGoods(page+1);
+    
+    await this.setState({
+      page: ++page 
+    });
   }
 
   render() {
@@ -25,18 +41,22 @@ class Goods extends React.Component {
 
     return (
       <div className="goods">
-        <div className="goods__list">
-          <div className="goods__item">
+        <InfiniteScroll
+          cb={this.onScrollDone}
+        >
+          <div className="goods__list">
             {goods.map((item) => (
-              <Item
-                openPopup={openPopup}
-                closePopup={closePopup}
-                onWatchItem={this.watchItem}
-                {...item}
-              />
+              <div className="goods__item">
+                <Item
+                  openPopup={openPopup}
+                  closePopup={closePopup}
+                  onWatchItem={this.watchItem}
+                  {...item}
+                />
+              </div>
             ))}
           </div>
-        </div>
+        </InfiniteScroll>
       </div>
     );
   }

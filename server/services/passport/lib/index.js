@@ -9,7 +9,7 @@ const registerUser = wrapAsyncFn(async (req, res, next) => {
   const { email, password } = req.body;
   const existUser = await UserModel.findOne({ email });
 
-  if (existUser) throw new ServiceError('ValidationError', {email: { message: 'exist' } })
+  if (existUser) return res.status(401).send('exist')
 
   const user = await UserModel.create({
     email,
@@ -26,7 +26,7 @@ const authenticate = wrapAsyncFn(async (req, res, next) => {
   return passport.authenticate('local', (err, user, info) => {
     if (err) throw err;
 
-    if (!user) return res.send({user: false});
+    if (!user) return res.status(401).send({user: false});
 
     return req.login(user, (err) => {
       if (err) throw err;
@@ -37,7 +37,7 @@ const authenticate = wrapAsyncFn(async (req, res, next) => {
 });
 
 const logout = wrapAsyncFn(async (req, res, next) => {
-  if (!req.user) return res.send('unauthorized');
+  if (!req.user) return res.status(401).send('unauthorized');
 
   await req.session.destroy();
   req.logout();

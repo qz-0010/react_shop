@@ -1,7 +1,8 @@
 class ServiceError extends Error {
-  constructor(name, errors) {
+  constructor(code, errors) {
     super(errors);
-    this.name = name || 'ServiceError';
+    this.name = 'ServiceError';
+    this.code = code;
     this.message = errors;
     this.errors = errors;
   }

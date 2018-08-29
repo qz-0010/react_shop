@@ -62,7 +62,8 @@ export const logout = () => async (dispatch) => {
   });
 };
 
-export const getGoods = (page = '1') => async (dispatch) => {
+export const getGoods = (page = 1) => async (dispatch) => {
+  debugger;
   const res = await axios.get(`/catalog/${page}`);
 
   dispatch({
@@ -97,6 +98,7 @@ export const addToBasket = (id, count) => async (dispatch) => {
 export const getOrder = () => localStorage.get('order');
 
 export const adminAddGood = (data, opt) => async (dispatch) => {
+  debugger;
   const res = await axios.post(`/admin/good`, data);
 
   dispatch({
